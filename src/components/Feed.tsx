@@ -28,9 +28,7 @@ function Feed() {
   useEffect(() => {
     if (searchTerm) {
       (async () => {
-        const data = await fetchSearchApi(
-          `search/?part=snippet&q=${searchTerm}`
-        );
+        const data = await fetchSearchApi(`search/?q=${searchTerm}`);
         setSearchResult(data.contents);
       })();
       setSelectedCategory(undefined);

@@ -4,7 +4,7 @@ import { BiMenu } from "react-icons/bi";
 import classNames from "classnames";
 import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
 import yt from "../img/yt.jpg";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const input = classNames(
   "px-4 py-1 outline-none bg-transparent w-full",
@@ -47,11 +47,13 @@ function Navbar() {
         <div className="text-2xl cursor-pointer p-2 rounded-full hover:bg-white/10 mr-1 md:mr-4">
           <BiMenu />
         </div>
-        <div>
-          <img src={yt} alt="logo" className="w-28" />
-        </div>
+        <Link to="/">
+          <div>
+            <img src={yt} alt="logo" className="w-24" />
+          </div>
+        </Link>
       </div>
-      <div className=" w-full flex justify-center   text-center">
+      <div className="lg:pr-40 w-full flex justify-center text-center">
         <form
           className="hidden sm:flex mx-left sm:w-[70%] md:w-3/5 max-w-[500px] "
           onSubmit={searchSubmit}
@@ -73,7 +75,7 @@ function Navbar() {
         </form>
       </div>
       <div className="">
-        <div className="w-10 h-10 bg-white/40 rounded-full"></div>
+        <div className="w-10 h-10 bg-white/80 rounded-full"></div>
       </div>
     </div>
   );
