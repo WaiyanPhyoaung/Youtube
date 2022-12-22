@@ -1,6 +1,8 @@
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import { CategoriesType, CategoryType } from "../utils/constants";
+import { SideBarContext } from "../App";
+import { useContext } from "react";
 
 type SideBarPros = {
   selectedCategory?: CategoryType;
@@ -14,9 +16,10 @@ function SideBar({
   categories,
 }: SideBarPros) {
   const navigate = useNavigate();
+  const context = useContext(SideBarContext);
 
   const categoryList = classNames(
-    "flex items-center cursor-pointer hover:bg-slate-50/10 px-4 py-2 rounded-xl pr-20"
+    "flex items-center cursor-pointer hover:bg-slate-50/10 px-4 py-2 rounded-xl "
   );
 
   const selectCategory = (category: CategoryType) => {
@@ -25,8 +28,13 @@ function SideBar({
   };
 
   return (
-    <div className="hidden md:block px-4 border-r border-gray-600/10 h-[calc(100vh-64px)] overflow-auto">
-      <div>
+    <div
+      className={[
+        "bg-[var(--theme-dark)] border-r duration-100 border-gray-600/10 h-screen md:h-[calc(100vh-64px)] overflow-auto",
+        `${context.openSideBar ? "w-[230px] px-4 " : "w-0 "}`,
+      ].join(" ")}
+    >
+      <div className="w-full">
         {Object.values(categories).map((category, index) => {
           return (
             <ul

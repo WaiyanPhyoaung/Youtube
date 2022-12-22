@@ -1,23 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { SideBar, Videos } from "./";
-import { categories, CategoryType } from "../utils/constants";
 import { fetchSearchApi } from "../utils/FetchAPI";
 import { useParams } from "react-router-dom";
+import { CategoryContext, SideBarContext } from "../App";
+import { CategoryType } from "../utils/constants";
+import SideBarOutside from "./SideBarOutside";
 
 function Feed() {
-  const [selectedCategory, setSelectedCategory] = useState<
-    CategoryType | undefined
-  >(categories.default[0]);
   const [videos, setVideos] = useState();
   const [searchResult, setSearchResult] = useState();
   const { searchTerm } = useParams();
+  const { selectedCategory, setSelectedCategory, categories } =
+    useContext(CategoryContext);
+  const { setOpenSideBar } = useContext(SideBarContext);
+
+  useEffect(() => {
+    setOpenSideBar(true);
+  }, []);
 
   useEffect(() => {
     // Anonymous IIFE
     if (selectedCategory?.category) {
       (async () => {
         const data = await fetchSearchApi(
-          `search/?part=snippet&q=${selectedCategory?.category}`
+          `search/?q=${selectedCategory?.category}`
         );
 
         setVideos(data.contents);
@@ -40,14 +46,19 @@ function Feed() {
   };
 
   return (
-    <div className="flex">
-      <SideBar
-        selectedCategory={selectedCategory || undefined}
-        changeSelectedCategory={changeSelectedCategory}
-        categories={categories}
-      />
+    <div className="flex justify-start items-start">
+      <div className="hidden md:block">
+        <SideBar
+          selectedCategory={selectedCategory || undefined}
+          changeSelectedCategory={changeSelectedCategory}
+          categories={categories}
+        />
+      </div>
+      <div className="block md:hidden">
+        <SideBarOutside />
+      </div>
 
-      <div className="px-4 sm:px-6 flex-1 h-[calc(100vh-64px)] overflow-auto">
+      <div className="px-4 flex-1 sm:px-6  h-[calc(100vh-64px)] overflow-auto">
         {/* <p className="m-2 flex justify-start items-center">
           <span className="mr-2">{<selectedCategory.icon />}</span>{" "}
           {selectedCategory.category?.toUpperCase()}
